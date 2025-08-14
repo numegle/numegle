@@ -113,7 +113,16 @@ function leaveMatch(sid: string, reason = 'left') {
 
 async function buildServer() {
 	const app = Fastify({ logger: true });
-	await app.register(fastifyCors, { origin: true, credentials: true });
+	const allowedOrigins = (process.env.ALLOWED_ORIGINS || '').split(',').map((s) => s.trim()).filter(Boolean);
+	await app.register(fastifyCors, {
+		credentials: true,
+		origin: (origin, cb) => {
+			if (!origin) return cb(null, true);
+			if (allowedOrigins.length === 0) return cb(null, true);
+			if (allowedOrigins.some((o) => origin === o)) return cb(null, true);
+			cb(new Error('CORS not allowed'));
+		}
+	});
 	await app.register(fastifyWebsocket);
 	await app.register(jwt, { secret: JWT_SECRET });
 

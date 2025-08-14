@@ -189,12 +189,14 @@ export const App: React.FC = () => {
 							<video ref={localVideoRef} autoPlay muted playsInline style={{ width: '100%', background: '#111827', borderRadius: 8 }} />
 						</div>
 					) : (
-					{messages.map((m, i) => (
-						<div key={i} style={{ margin: '6px 0' }}>
-							<span style={{ color: m.from === 'You' ? '#a6e3a1' : '#f38ba8' }}>{m.from}:</span>{' '}
-							<span style={{ color: '#e6edf3' }}>{m.text}</span>
-						</div>
-					))}
+						<>
+							{messages.map((m, i) => (
+								<div key={i} style={{ margin: '6px 0' }}>
+									<span style={{ color: m.from === 'You' ? '#a6e3a1' : '#f38ba8' }}>{m.from}:</span>{' '}
+									<span style={{ color: '#e6edf3' }}>{m.text}</span>
+								</div>
+							))}
+						</>
 					)}
 				</div>
 				{mode === 'text' && (
